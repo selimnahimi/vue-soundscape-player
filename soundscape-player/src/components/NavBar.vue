@@ -15,7 +15,7 @@ export default toNative(NavBar);
   <h1>Soundscape Player</h1>
   <ul>
     <RouterLink to="/"><li>Home</li></RouterLink>
-    <RouterLink to="/about"><li>About</li></RouterLink>
+    <RouterLink to="/settings"><li>Settings</li></RouterLink>
   </ul>
 </nav>
 </template>
