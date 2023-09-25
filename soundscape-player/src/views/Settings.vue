@@ -33,6 +33,12 @@ class Settings extends Vue {
       loadedScript.title = this.file.name;
       this.soundscapeScriptLoaded(loadedScript);
 
+      (async () => {
+        let sound = await import('@/assets/sound/ui/buttonclick.wav');
+        const audio = new Audio(sound.default);
+        audio.play();
+      })();
+
       this.successfullyAdded = true;
     };
     reader.onerror = (err) => console.log(err);
