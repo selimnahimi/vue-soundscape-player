@@ -28,8 +28,8 @@ class Settings extends Vue {
 
         this.content = "check the console for file output";
         reader.onload = (res) => {
-            let soundscapeParser = new SoundscapeScriptParser();
-            let loadedScript = soundscapeParser.parseSoundscapeScript(res.target!.result!.toString());
+            let rawText = res.target!.result!.toString();
+            let loadedScript = SoundscapeScriptParser.parse(rawText);
             loadedScript.title = this.file.name;
             this.soundscapeScriptLoaded(loadedScript);
 

@@ -3,7 +3,7 @@ import SoundscapeAction from "@/model/SoundscapeAction";
 import SoundscapeScript from "@/model/SoundscapeScript";
 
 export default class SoundscapeScriptParser {
-    private currentSoundscapeScript: SoundscapeScript | null = null;
+    private soundscapeScript: SoundscapeScript = new SoundscapeScript();
     private depth: number = 0;
     private isBuildingStringBuffer: boolean = false;
     private currentCharacter: string = '';
@@ -12,19 +12,13 @@ export default class SoundscapeScriptParser {
     private currentAction: SoundscapeAction | null = null;
     private currentActionParameterName: string | null = null;
 
-    parseSoundscapeScript(rawText: string): SoundscapeScript {
-        this.currentSoundscapeScript = new SoundscapeScript();
-        this.depth = 0;
-        this.isBuildingStringBuffer = false;
-        this.currentCharacter = '';
-        this.stringBuffer = '';
-        this.currentSoundscape = null;
-        this.currentAction = null;
-        this.currentActionParameterName = null;
+    static parse(rawText: string): SoundscapeScript {
+        const parser = new SoundscapeScriptParser();
 
-        rawText.split('').forEach(char => this.processCharacter(char));
+        rawText.split('')
+            .forEach(char => parser.processCharacter(char));
 
-        return this.currentSoundscapeScript;
+        return parser.soundscapeScript;
     }
 
     private processCharacter(character: string) {
@@ -66,42 +60,31 @@ export default class SoundscapeScriptParser {
     }
 
     private finalizeStringBuffer() {
-        if (this.depth === 0) {
+        if (this.shouldStartBuildingSoundscape()) {
             this.startBuildingSoundscape();
         }
 
-        if (this.depth === 1 && this.isBuildingSoundscape()) {
+        if (this.shouldStartBuildingAction()) {
             this.startBuildingAction();
         }
 
-        if (this.depth === 2 && this.isBuildingActionParameter()) {
+        if (this.shouldBuildActionParameter()) {
             this.buildActionParameter();
         }
 
-        if (this.depth === 2 && this.isBuildingAction() && !this.isBuildingActionParameter()) {
+        if (this.shouldStartBuildingActionParameter()) {
             this.startBuildingActionParameter();
         }
 
-        if (this.depth === 3 && this.isBuildingActionParameter()) {
+        if (this.shouldCollectRandomSounds()) {
             this.collectRandomSounds();
         }
 
-        this.stringBuffer = '';
+        this.resetStringBuffer();
     }
 
-    private collectRandomSounds() {
-        if (this.currentActionParameterName !== 'rndwave') return;
-        if (this.stringBuffer === 'wave') return;
-
-        this.currentAction!.rndwave.push(this.stringBuffer);
-    }
-
-    private isBuildingSoundscape() {
-        return this.currentSoundscape !== null;
-    }
-
-    private isBuildingAction() {
-        return this.currentAction !== null;
+    private shouldStartBuildingSoundscape() {
+        return this.depth === 0;
     }
 
     private startBuildingSoundscape() {
@@ -109,9 +92,25 @@ export default class SoundscapeScriptParser {
         this.currentSoundscape.name = this.stringBuffer;
     }
 
+    private isBuildingSoundscape() {
+        return this.currentSoundscape !== null;
+    }
+
+    private shouldStartBuildingAction() {
+        return this.depth === 1 && this.isBuildingSoundscape();
+    }
+
     private startBuildingAction() {
         this.currentAction = new SoundscapeAction();
         this.currentAction.type = this.stringBuffer;
+    }
+
+    private isBuildingAction() {
+        return this.currentAction !== null;
+    }
+
+    private shouldStartBuildingActionParameter() {
+        return this.depth === 2 && this.isBuildingAction() && !this.isBuildingActionParameter();
     }
 
     private startBuildingActionParameter() {
@@ -122,43 +121,61 @@ export default class SoundscapeScriptParser {
         return this.currentActionParameterName !== null;
     }
 
+    private shouldBuildActionParameter() {
+        return this.depth === 2 && this.isBuildingActionParameter();
+    }
+
     private buildActionParameter() {
         const parameter = this.currentActionParameterName;
         const value = this.stringBuffer.trim();
+        const action = this.currentAction!;
 
-        if (parameter === 'name') {
-            this.currentAction!.soundscapeToPlay = value;
+        switch(parameter) {
+            case 'name':
+                action.soundscapeToPlay = value;
+                break;
+            case 'soundlevel':
+                action.soundscapeToPlay = value;
+                break;
+            case 'wave':
+                action.rndwave.push(value);
+                break;
+            case 'position':
+                action.position = value;
+                break;
+            case 'time':
+                action.time = this.parseRange();
+                break;
+            case 'volume':
+                action.volume = this.parseRange();
+                break;
+            case 'pitch':
+                action.pitch = this.parseRange();
+                break;
         }
 
-        if (parameter === 'soundlevel') {
-            this.currentAction!.soundlevel = value;
-        }
-
-        if (parameter === 'wave') {
-            this.currentAction!.rndwave.push(value);
-        }
-
-        if (parameter === 'position') {
-            this.currentAction!.position = value;
-        }
-
-        if (parameter === 'time') {
-            this.currentAction!.time = this.parseRange();
-        }
-
-        if (parameter === 'volume') {
-            this.currentAction!.volume = this.parseRange();
-        }
-
-        if (parameter === 'pitch') {
-            this.currentAction!.volume = this.parseRange();
-        }
+        this.currentAction = action;
 
         this.stopBuildingActionParameter();
     }
 
     private stopBuildingActionParameter() {
         this.currentActionParameterName = null;
+    }
+
+    private shouldCollectRandomSounds() {
+        return this.depth === 3 && this.isBuildingActionParameter();
+    }
+
+    private collectRandomSounds() {
+        if (this.currentActionParameterName !== 'rndwave') return;
+        if (this.stringBuffer === 'wave') return;
+
+        this.currentAction!.rndwave.push(this.stringBuffer);
+    }
+
+    private resetStringBuffer() {
+        this.stringBuffer = '';
     }
 
     private parseRange(): { min: number, max: number } {
@@ -194,7 +211,7 @@ export default class SoundscapeScriptParser {
         }
 
         if (newDepth === 0 && this.isBuildingSoundscape()) {
-            this.currentSoundscapeScript!.soundscapes.push(this.currentSoundscape!);
+            this.soundscapeScript!.soundscapes.push(this.currentSoundscape!);
         }
 
         this.depth = newDepth;
