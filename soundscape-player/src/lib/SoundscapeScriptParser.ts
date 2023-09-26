@@ -18,7 +18,11 @@ export default class SoundscapeScriptParser {
         rawText.split('')
             .forEach(char => parser.processCharacter(char));
 
-        return parser.soundscapeScript;
+        return parser.getResult();
+    }
+
+    private getResult() {
+        return this.soundscapeScript;
     }
 
     private processCharacter(character: string) {
