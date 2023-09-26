@@ -46,7 +46,7 @@ export default class SoundscapeScriptParser {
         this.appendToStringBuffer();
     }
 
-    this.assertDepth();
+    this.assertDepthIsPositive();
   }
 
   private appendToStringBuffer() {
@@ -57,7 +57,7 @@ export default class SoundscapeScriptParser {
 
   private updateStringBuffer() {
     if (this.isBuildingStringBuffer) {
-      this.processStringBuffer();
+      this.finalizeStringBuffer();
 
       this.isBuildingStringBuffer = false;
     } else {
@@ -65,7 +65,7 @@ export default class SoundscapeScriptParser {
     }
   }
 
-  private processStringBuffer() {
+  private finalizeStringBuffer() {
     if (this.depth === 0) {
       this.startBuildingSoundscape();
     }
@@ -154,6 +154,10 @@ export default class SoundscapeScriptParser {
       this.currentAction!.volume = this.parseRange();
     }
 
+    this.stopBuildingActionParameter();
+  }
+
+  private stopBuildingActionParameter() {
     this.currentActionParameterName = null;
   }
 
@@ -196,7 +200,7 @@ export default class SoundscapeScriptParser {
     this.depth = newDepth;
   }
 
-  private assertDepth() {
+  private assertDepthIsPositive() {
     if (this.depth < 0) {
       console.error("ERROR: Depth has gone below 0!");
     }
