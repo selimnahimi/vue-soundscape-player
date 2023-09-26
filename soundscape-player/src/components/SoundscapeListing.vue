@@ -5,23 +5,23 @@ import type Soundscape from '@/model/Soundscape';
 
 @Component
 class SoundscapeListing extends Vue {
-  @Prop
-  soundscapeScripts!: SoundscapeScript[];
+    @Prop
+    soundscapeScripts!: SoundscapeScript[];
 
-  listAllSoundscapes(): Soundscape[] {
-    const result: Soundscape[] = [];
+    listAllSoundscapes(): Soundscape[] {
+        const result: Soundscape[] = [];
 
-    this.soundscapeScripts.forEach(script => {
-      result.concat(script.soundscapes);
-    });
+        this.soundscapeScripts.forEach(script => {
+            result.concat(script.soundscapes);
+        });
 
-    return result;
-  }
+        return result;
+    }
 }
 
 export default toNative(SoundscapeListing);
 </script>
 
 <template>
-<p v-for="soundscape in listAllSoundscapes()">{{ soundscape.name }}</p>
+    <p v-for="soundscape in listAllSoundscapes()">{{ soundscape.name }}</p>
 </template>
