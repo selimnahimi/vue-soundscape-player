@@ -11,7 +11,6 @@ import type SoundscapeScript from '@/model/SoundscapeScript';
 })
 class Settings extends Vue {
     file: any;
-    content: any;
     successfullyAdded: boolean = false;
 
     @Prop({ default: [] })
@@ -26,23 +25,26 @@ class Settings extends Vue {
         this.file = this.fileInput.files[0];
         const reader = new FileReader();
 
-        this.content = "check the console for file output";
-        reader.onload = (res) => {
-            let rawText = res.target!.result!.toString();
-            let loadedScript = SoundscapeScriptParser.parse(rawText);
-            loadedScript.title = this.file.name;
-            this.soundscapeScriptLoaded(loadedScript);
-
-            (async () => {
-                let sound = await import('@/assets/sound/ui/buttonclick.wav');
-                const audio = new Audio(sound.default);
-                audio.play();
-            })();
-
-            this.successfullyAdded = true;
-        };
+        reader.onload = this.loadFile;
         reader.onerror = (err) => console.log(err);
         reader.readAsText(this.file);
+    }
+
+    private loadFile(readerResult: ProgressEvent<FileReader>) {
+        let rawText = readerResult.target!.result!.toString();
+        let loadedScript = SoundscapeScriptParser.parse(rawText);
+        loadedScript.title = this.file.name;
+        this.soundscapeScriptLoaded(loadedScript);
+
+        this.playSound('sound/ui/buttonclick.wav');
+
+        this.successfullyAdded = true;
+    }
+
+    async playSound(soundPath: string, game: string = 'hl2') {
+        const sound = await import("../assets/games/" + game + "/" + soundPath);
+        const audio = new Audio(sound.default);
+        audio.play();
     }
 
     @Emit
@@ -62,6 +64,8 @@ export default toNative(Settings);
         <label for="path">Import soundscape script</label>
         <input id="path" type="file" ref="fileInput" @change="readFile()">
         <p v-if="successfullyAdded">Soundscape script successfully added.</p>
+
+        <button @click="playSound('sound/ui/buttonclick.wav')">Play</button>
 
         <SoundscapeScriptDetails v-for="script in soundscapeScripts" :soundscapeScript="script" />
     </div>
