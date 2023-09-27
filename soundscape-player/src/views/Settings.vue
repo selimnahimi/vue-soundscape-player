@@ -5,12 +5,11 @@ import SoundPlayer from '@/lib/SoundPlayer';
 import SoundscapeScriptDetails from '@/components/SoundscapeScriptDetails.vue';
 import type SoundscapeScript from '@/model/SoundscapeScript';
 import { useStore } from '@/store';
-import SoundscapeDirector from '@/components/SoundscapeDirector.vue';
+import type Soundscape from '@/model/Soundscape';
 
 @Component({
     components: {
-        SoundscapeScriptDetails,
-        SoundscapeDirector
+        SoundscapeScriptDetails
     }
 })
 class Settings extends Vue {
@@ -54,16 +53,6 @@ class Settings extends Vue {
 
     soundscapeScriptLoaded(script: SoundscapeScript) {
         this.store.dispatch('addSoundscapeScript', { script });
-
-        console.log(this.store.state.soundscapeScripts);
-        console.log(this.store.state.playingSoundscapes);
-        this.playSoundscape();
-    }
-
-    playSoundscape() {
-        let soundscape = this.store.state.soundscapeScripts[0].soundscapes[17];
-        console.log(soundscape);
-        this.store.dispatch('playSoundscape', { soundscape });
     }
 }
 
@@ -81,8 +70,6 @@ export default toNative(Settings);
 
         <button @click="playSound('ui/buttonclick.wav')">Play</button>
     </div>
-
-    <SoundscapeDirector />
 </template>
 
 <style></style>

@@ -2,13 +2,18 @@
 import { RouterView } from 'vue-router';
 import { Component, toNative, Vue } from 'vue-facing-decorator';
 import NavBar from '@/components/NavBar.vue';
+import { useStore } from './store';
+import type Soundscape from './model/Soundscape';
+import SoundscapeDirector from './components/SoundscapeDirector.vue';
 
 @Component({
     components: {
-        NavBar
+        NavBar,
+        SoundscapeDirector
     }
 })
 class App extends Vue {
+    store: any = useStore();
 }
 
 export default toNative(App);
@@ -25,6 +30,8 @@ export default toNative(App);
             <RouterView />
         </main>
     </div>
+
+    <SoundscapeDirector />
 </template>
 
 <style>

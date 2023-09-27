@@ -1,10 +1,20 @@
 <script lang="ts">
+import { useStore } from '@/store';
 import { Component, Vue, toNative } from 'vue-facing-decorator';
 import { RouterLink, RouterView } from 'vue-router';
 
 @Component
 class NavBar extends Vue {
+    store: any = useStore();
 
+    get playingSoundscape() {
+        let soundscapes = this.store.state.currentlyPlayingSoundscapes;
+        if (soundscapes.length === 0) {
+            return null;
+        }
+
+        return this.store.state.currentlyPlayingSoundscapes[0];
+    }
 }
 
 export default toNative(NavBar);
@@ -21,6 +31,7 @@ export default toNative(NavBar);
                 <li>Settings</li>
             </RouterLink>
         </ul>
+        <p class="currently-playing" v-if="playingSoundscape">Currently playing: {{ playingSoundscape.name }}</p>
     </nav>
 </template>
 
@@ -30,6 +41,8 @@ nav {
     height: 100vh;
     width: 400px;
     padding-left: 15px;
+    display: flex;
+    flex-direction: column;
 }
 
 h1 {
@@ -45,6 +58,7 @@ ul {
     list-style: none;
     margin-left: 15px;
     font-size: 26px;
+    flex: 1;
 }
 
 li {
@@ -56,4 +70,10 @@ li {
 li:hover {
     color: var(--lightest);
     padding-left: 15px;
-}</style>
+}
+
+.currently-playing {
+    margin-bottom: 15px;
+}
+
+</style>

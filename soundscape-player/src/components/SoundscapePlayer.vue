@@ -111,7 +111,3 @@ class SoundscapePlayer extends Vue {
 export default toNative(SoundscapePlayer);
 
 </script>
-
-<template>
-    <h1>{{ soundscape.name }}</h1>
-</template>

@@ -1,6 +1,6 @@
 <script lang="ts">
 import SoundscapeScriptDetails from '@/components/SoundscapeScriptDetails.vue';
-import type SoundscapeScript from '@/model/SoundscapeScript';
+import type Soundscape from '@/model/Soundscape';
 import { useStore } from '@/store';
 import { Component, Vue, toNative } from 'vue-facing-decorator';
 
@@ -15,6 +15,11 @@ class HomeView extends Vue {
     get soundscapeScripts() {
         return this.store.getters.soundscapeScripts;
     }
+
+    playSoundscape(soundscape: Soundscape) {
+        this.store.dispatch('clearPlayingSoundscapes');
+        this.store.dispatch('playSoundscape', { soundscape });
+    }
 }
 
 export default toNative(HomeView);
@@ -24,7 +29,7 @@ export default toNative(HomeView);
     <div class="content">
         <h1 class="title">Home</h1>
 
-        <SoundscapeScriptDetails v-for="script in soundscapeScripts" :soundscapeScript="script" />
+        <SoundscapeScriptDetails v-for="script in soundscapeScripts" :soundscapeScript="script" @playSoundscape="playSoundscape" />
     </div>
 </template>
 

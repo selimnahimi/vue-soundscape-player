@@ -33,5 +33,5 @@ export default toNative(SoundscapeDirector);
 </script>
 
 <template>
-    <SoundscapePlayer v-for="soundscape in currentlyPlayingSoundscapes" :soundscape="soundscape" @playOtherSoundscape="playSoundscape" />
+    <SoundscapePlayer v-for="soundscape in currentlyPlayingSoundscapes" :soundscape="soundscape" @playOtherSoundscape="playSoundscape" :key="soundscape.name" />
 </template>
