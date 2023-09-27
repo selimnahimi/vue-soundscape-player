@@ -1,8 +1,7 @@
 <script lang="ts">
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterView } from 'vue-router';
 import { Component, toNative, Vue } from 'vue-facing-decorator';
 import NavBar from '@/components/NavBar.vue';
-import type SoundscapeScript from './model/SoundscapeScript';
 
 @Component({
     components: {
@@ -10,11 +9,6 @@ import type SoundscapeScript from './model/SoundscapeScript';
     }
 })
 class App extends Vue {
-    loadedSoundscapeScripts: SoundscapeScript[] = [];
-
-    addSoundscapeScript(soundscapeScript: SoundscapeScript) {
-        this.loadedSoundscapeScripts.push(soundscapeScript);
-    }
 }
 
 export default toNative(App);
@@ -28,7 +22,7 @@ export default toNative(App);
         </header>
 
         <main>
-            <RouterView :soundscapeScripts="loadedSoundscapeScripts" @soundscapeScriptLoaded="addSoundscapeScript" />
+            <RouterView />
         </main>
     </div>
 </template>

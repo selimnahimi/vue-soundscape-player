@@ -1,23 +1,30 @@
 <script lang="ts">
 import { Component, Emit, Prop, Ref, Vue, toNative } from 'vue-facing-decorator';
 import SoundscapeScriptParser from '@/lib/SoundscapeScriptParser';
+import SoundPlayer from '@/lib/SoundPlayer';
 import SoundscapeScriptDetails from '@/components/SoundscapeScriptDetails.vue';
 import type SoundscapeScript from '@/model/SoundscapeScript';
+import { useStore } from '@/store';
+import SoundscapeDirector from '@/components/SoundscapeDirector.vue';
 
 @Component({
     components: {
-        SoundscapeScriptDetails
+        SoundscapeScriptDetails,
+        SoundscapeDirector
     }
 })
 class Settings extends Vue {
+    store: any = useStore();
+    
     file: any;
     successfullyAdded: boolean = false;
 
-    @Prop({ default: [] })
-    soundscapeScripts!: SoundscapeScript[]
-
     @Ref('fileInput')
     fileInput!: HTMLInputElement;
+
+    get soundscapeScripts() {
+        return this.store.getters.soundscapeScripts;
+    }
 
     readFile() {
         if (this.fileInput.files === null) return;
@@ -36,20 +43,27 @@ class Settings extends Vue {
         loadedScript.title = this.file.name;
         this.soundscapeScriptLoaded(loadedScript);
 
-        this.playSound('sound/ui/buttonclick.wav');
+        this.playSound('ui/buttonclick.wav');
 
         this.successfullyAdded = true;
     }
 
-    async playSound(soundPath: string, game: string = 'hl2') {
-        const sound = await import("../assets/games/" + game + "/" + soundPath);
-        const audio = new Audio(sound.default);
-        audio.play();
+    async playSound(soundPath: string) {
+        SoundPlayer.playSound(soundPath);
     }
 
-    @Emit
-    soundscapeScriptLoaded(soundscapeScript: SoundscapeScript) {
-        return soundscapeScript;
+    soundscapeScriptLoaded(script: SoundscapeScript) {
+        this.store.dispatch('addSoundscapeScript', { script });
+
+        console.log(this.store.state.soundscapeScripts);
+        console.log(this.store.state.playingSoundscapes);
+        this.playSoundscape();
+    }
+
+    playSoundscape() {
+        let soundscape = this.store.state.soundscapeScripts[0].soundscapes[17];
+        console.log(soundscape);
+        this.store.dispatch('playSoundscape', { soundscape });
     }
 }
 
@@ -65,10 +79,10 @@ export default toNative(Settings);
         <input id="path" type="file" ref="fileInput" @change="readFile()">
         <p v-if="successfullyAdded">Soundscape script successfully added.</p>
 
-        <button @click="playSound('sound/ui/buttonclick.wav')">Play</button>
-
-        <SoundscapeScriptDetails v-for="script in soundscapeScripts" :soundscapeScript="script" />
+        <button @click="playSound('ui/buttonclick.wav')">Play</button>
     </div>
+
+    <SoundscapeDirector />
 </template>
 
 <style></style>
