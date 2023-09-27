@@ -21,6 +21,9 @@ class Settings extends Vue {
     @Ref('fileInput')
     fileInput!: HTMLInputElement;
 
+    @Ref('folderInput')
+    folderInput!: HTMLInputElement;
+
     get soundscapeScripts() {
         return this.store.getters.soundscapeScripts;
     }
@@ -34,6 +37,10 @@ class Settings extends Vue {
         reader.onload = this.loadFile;
         reader.onerror = (err) => console.log(err);
         reader.readAsText(this.file);
+    }
+
+    readFolder() {
+        console.log(this.folderInput.files);
     }
 
     private loadFile(readerResult: ProgressEvent<FileReader>) {
@@ -66,6 +73,9 @@ export default toNative(Settings);
 
         <label for="path">Import soundscape script</label>
         <input id="path" type="file" ref="fileInput" @change="readFile()">
+
+        <input type="file" id="folder" ref="folderInput" @change="readFolder()" webkitdirectory directory multiple/>
+
         <p v-if="successfullyAdded">Soundscape script successfully added.</p>
 
         <button @click="playSound('ui/buttonclick.wav')">Play</button>
