@@ -41,6 +41,11 @@ export default toNative(App);
 
 main {
     flex: 1;
+    min-height: 100vh;
+}
+
+header {
+    width: 400px;
 }
 
 main .content {

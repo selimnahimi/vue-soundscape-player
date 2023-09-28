@@ -22,30 +22,36 @@ export default toNative(NavBar);
 
 <template>
     <nav>
-        <h1>Soundscape Player</h1>
-        <ul>
-            <RouterLink to="/">
-                <li>Soundscapes</li>
-            </RouterLink>
-            <RouterLink to="/sounds">
-                <li>Sounds</li>
-            </RouterLink>
-            <RouterLink to="/settings">
-                <li>Import</li>
-            </RouterLink>
-        </ul>
-        <p class="currently-playing" v-if="playingSoundscape">Currently playing: {{ playingSoundscape.name }}</p>
+        <div class="content">
+            <h1>Soundscape Player</h1>
+            <ul>
+                <RouterLink to="/">
+                    <li>Soundscapes</li>
+                </RouterLink>
+                <RouterLink to="/sounds">
+                    <li>Sounds</li>
+                </RouterLink>
+                <RouterLink to="/settings">
+                    <li>Import</li>
+                </RouterLink>
+            </ul>
+            <p class="currently-playing" v-if="playingSoundscape">Currently playing: {{ playingSoundscape.name }}</p>
+        </div>
     </nav>
 </template>
 
 <style scoped>
 nav {
     background-color: rgb(var(--darkest));
-    height: 100vh;
-    width: 400px;
+    height: 100%;
+    width: 100%;
     padding-left: 15px;
     display: flex;
     flex-direction: column;
+}
+
+nav .content {
+    position: fixed;
 }
 
 h1 {
@@ -76,7 +82,8 @@ li:hover {
 }
 
 .currently-playing {
-    margin-bottom: 15px;
+    position: fixed;
+    bottom: 15px;
 }
 
 </style>

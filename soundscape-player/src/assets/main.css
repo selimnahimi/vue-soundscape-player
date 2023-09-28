@@ -21,7 +21,6 @@ body {
 
 label {
     display: block;
-    margin-top: 30px;
     font-size: 1em;
 }
 
@@ -34,4 +33,8 @@ input[type=text] {
 
 input[type=text]:focus {
     border-color: green;
+}
+
+input {
+    margin-bottom: 30px;
 }
