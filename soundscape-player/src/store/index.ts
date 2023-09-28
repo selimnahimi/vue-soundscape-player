@@ -5,6 +5,7 @@ import { type InjectionKey } from 'vue'
 import { createStore, useStore as baseUseStore, Store } from 'vuex'
 
 export interface State {
+    soundFiles: { [key: string]: File},
     soundscapeScripts: SoundscapeScript[],
     currentlyPlayingSoundscapes: Soundscape[]
 }
@@ -13,6 +14,7 @@ export const key: InjectionKey<Store<State>> = Symbol()
 
 export const store = createStore<State>({
     state: {
+        soundFiles: {},
         soundscapeScripts: [],
         currentlyPlayingSoundscapes: []
     },
@@ -27,6 +29,10 @@ export const store = createStore<State>({
 
         allSoundscapes(state: State) {
             return state.soundscapeScripts.flatMap(script => script.soundscapes); 
+        },
+
+        soundFiles(state: State) {
+            return state.soundFiles;
         }
     },
     mutations: {
@@ -41,6 +47,14 @@ export const store = createStore<State>({
 
         clearPlayingSoundscapes(state: State) {
             state.currentlyPlayingSoundscapes = [];
+        },
+
+        addSoundFile(state: State, file: File) {
+            const path = file.webkitRelativePath;
+            if (path in state.soundFiles)
+                return;
+            
+            state.soundFiles[path] = file;
         }
     },
     actions: {
@@ -54,6 +68,10 @@ export const store = createStore<State>({
 
         clearPlayingSoundscapes(context: Store<State>) {
             context.commit('clearPlayingSoundscapes');
+        },
+
+        addSoundFile(context: Store<State>, payload: any) {
+            context.commit('addSoundFile', payload.file);
         }
     }
 })

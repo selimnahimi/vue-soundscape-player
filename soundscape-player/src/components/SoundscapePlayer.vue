@@ -37,16 +37,20 @@ class SoundscapePlayer extends Vue {
     }
 
     stop() {
-        for (const actionIndex in this.timers) {
-            clearTimeout(this.timers[actionIndex]);
-        }
-
-        this.timers = {};
+        this.clearTimers();
     }
 
     @Emit
     playOtherSoundscape(soundscape: Soundscape) {
         return soundscape;
+    }
+
+    private clearTimers() {
+        for (const actionIndex in this.timers) {
+            clearTimeout(this.timers[actionIndex]);
+        }
+
+        this.timers = {};
     }
 
     private playActionOnRepeat(action: SoundscapeAction, actionIndex: number) {
@@ -109,8 +113,12 @@ class SoundscapePlayer extends Vue {
     }
 
     private playActionRandom(action: SoundscapeAction) {
-        let sound = this.getRandomSound(action);
-        SoundPlayer.playSound(sound);
+        let soundPath = this.getRandomSound(action);
+        let soundFile = this.getSoundFile(soundPath);
+        console.log('playing ' + soundFile);
+
+        if (soundFile)
+            SoundPlayer.playSoundFile(soundFile);
     }
 
     private getRandomSound(action: SoundscapeAction) {
@@ -126,6 +134,17 @@ class SoundscapePlayer extends Vue {
 
     private getAllSoundscapes(): Soundscape[] {
         return this.store.getters.allSoundscapes;
+    }
+
+    private getSoundFile(path: string): File | null {
+        let soundFiles: { [key: string]: File } = this.store.getters.soundFiles;
+        if (!path.startsWith('sound/'))
+            path = 'sound/' + path;
+        
+        if (path in soundFiles)
+            return soundFiles[path];
+        else
+            return null;
     }
 }
 

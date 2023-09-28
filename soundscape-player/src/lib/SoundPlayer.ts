@@ -1,6 +1,12 @@
 export default class SoundPlayer {
     static defaultGame = 'hl2';
 
+    static async playSoundFile(file: File, game: string = this.defaultGame) {
+        const url = URL.createObjectURL(file);
+        const audio = new Audio(url);
+        audio.play();
+    }
+
     static async playSound(soundPath: string, game: string = this.defaultGame) {
         this.loadSound(soundPath, game)
         .then(sound => this.play(sound));

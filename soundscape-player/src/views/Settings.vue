@@ -5,7 +5,6 @@ import SoundPlayer from '@/lib/SoundPlayer';
 import SoundscapeScriptDetails from '@/components/SoundscapeScriptDetails.vue';
 import type SoundscapeScript from '@/model/SoundscapeScript';
 import { useStore } from '@/store';
-import type Soundscape from '@/model/Soundscape';
 
 @Component({
     components: {
@@ -40,7 +39,16 @@ class Settings extends Vue {
     }
 
     readFolder() {
-        console.log(this.folderInput.files);
+        if (!this.folderInput.files) {
+            return;
+        }
+
+        for (let i = 0; i < this.folderInput.files.length; i++) {
+            let file = this.folderInput.files[i];
+            this.store.dispatch('addSoundFile', { file });
+        }
+
+        console.log(this.store.getters.soundFiles);
     }
 
     private loadFile(readerResult: ProgressEvent<FileReader>) {
