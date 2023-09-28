@@ -48,7 +48,7 @@ export default toNative(SoundscapeDetails);
 
 .details .clickable:hover {
     cursor: pointer;
-    color: var(--lightest);
+    color: rgb(var(--lightest));
 }
 
 .details button {
@@ -56,7 +56,7 @@ export default toNative(SoundscapeDetails);
     background-color: transparent;
     border: none;
     font-size: 32px;
-    color: var(--lightest);
+    color: rgb(var(--lightest));
 }
 
 .details button:hover {

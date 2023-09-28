@@ -48,9 +48,14 @@ export default toNative(SoundscapeActionDetails);
 <style scoped>
 .actionDetails {
     padding: 15px;
-    background-color: var(--darkest);
+    background-color: rgba(var(--darkest), 0.8);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     width: fit-content;
     font-size: 0.5em;
+
+    margin: 15px;
+
+    border-left: solid 3px rgb(var(--lightest));
 }
 
 .actionDetails li {

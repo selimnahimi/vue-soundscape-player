@@ -1,10 +1,10 @@
 /* Palette: https://colorhunt.co/palette/040d12183d3d5c837493b1a6 */
 
 :root {
-    --darkest: #040D12;
-    --darker: #183D3D;
-    --lighter: #5C8374;
-    --lightest: #93B1A6;
+    --darkest: 4, 13, 18;       /* #040D12 */
+    --darker: 24, 61, 61;       /* #183D3D */
+    --lighter: 92, 131, 116;    /* #5C8374 */
+    --lightest: 147, 177, 166;  /* #93B1A6 */
 }
 
 * {
@@ -13,7 +13,7 @@
 }
 
 body {
-    background-color: var(--darker);
+    background-color: rgb(var(--darker));
     color: white;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 2em;

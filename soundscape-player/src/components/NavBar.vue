@@ -37,7 +37,7 @@ export default toNative(NavBar);
 
 <style scoped>
 nav {
-    background-color: var(--darkest);
+    background-color: rgb(var(--darkest));
     height: 100vh;
     width: 400px;
     padding-left: 15px;
@@ -68,7 +68,7 @@ li {
 }
 
 li:hover {
-    color: var(--lightest);
+    color: rgb(var(--lightest));
     padding-left: 15px;
 }
 
