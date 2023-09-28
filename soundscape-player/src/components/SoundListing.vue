@@ -1,10 +1,17 @@
 <script lang="ts">
-import { useStore, type State, Store } from '@/store';
+import { useStore, type State } from '@/store';
 import { Component, Emit, Vue, toNative } from 'vue-facing-decorator';
+import SoundTree from './SoundTree.vue';
 
-@Component
+@Component({
+    components: {
+        SoundTree
+    }
+})
 class SoundListing extends Vue {
     store: any = useStore();
+
+    viewMode: 'tree' | 'list' = 'list';
     
     get soundFiles(): File[] {
         return this.store.getters.soundFiles;
@@ -20,9 +27,17 @@ export default toNative(SoundListing);
 </script>
 
 <template>
-    <ul>
+    <p>
+        View mode:
+        <select v-model="viewMode">
+            <option value="list">List</option>
+            <option value="tree">Tree</option>
+        </select>
+    </p>
+    <ul v-if="viewMode === 'list'">
         <li v-for="soundFile in soundFiles" @click="playSound(soundFile)">{{ soundFile.webkitRelativePath }}</li>
     </ul>
+    <SoundTree v-if="viewMode === 'tree'" />
 </template>
 
 <style scoped>
