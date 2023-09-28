@@ -1,10 +1,19 @@
 <script lang="ts">
 import type Soundscape from '@/model/Soundscape';
+import type SoundscapeAction from '@/model/SoundscapeAction';
 import type SoundscapeScript from '@/model/SoundscapeScript';
 import { Component, Emit, Prop, Vue, toNative } from 'vue-facing-decorator';
+import SoundscapeDetails from './SoundscapeDetails.vue';
 
-@Component
-class SoundscapeDetails extends Vue {
+@Component({
+    components: {
+        SoundscapeDetails
+    }
+})
+class SoundscapeScriptDetails extends Vue {
+    openSoundscapes: Set<Soundscape> = new Set();
+    openActions: Set<SoundscapeAction> = new Set();
+
     @Prop
     soundscapeScript!: SoundscapeScript;
 
@@ -12,33 +21,45 @@ class SoundscapeDetails extends Vue {
     playSoundscape(soundscape: Soundscape) {
         return soundscape;
     }
+
+    toggleSoundscapeDetails(soundscape: Soundscape) {
+        if (this.openSoundscapes.has(soundscape)) {
+            this.openSoundscapes.delete(soundscape);
+        } else {
+            this.openSoundscapes.add(soundscape);
+        }
+    }
+
+    toggleActionDetails(action: SoundscapeAction) {
+        if (this.openActions.has(action)) {
+            this.openActions.delete(action);
+        } else {
+            this.openActions.add(action);
+        }
+    }
 }
 
-export default toNative(SoundscapeDetails);
+export default toNative(SoundscapeScriptDetails);
 </script>
 
 <template>
     <div class="details">
         <h4>{{ soundscapeScript.title }}</h4>
         <ul>
-            <li @click="playSoundscape(soundscape)" v-for="soundscape in soundscapeScript.soundscapes" :key="soundscape.name">{{ soundscape.name }} ({{ soundscape.actions.length }}
-                actions)</li>
+            <li v-for="soundscape in soundscapeScript.soundscapes" :key="soundscape.name">
+                <SoundscapeDetails :soundscape="soundscape" />
+            </li>
         </ul>
     </div>
 </template>
 
-<style scoped>
+<style>
 .details {
     border: 1px solid black;
 }
 
 .details li {
-    margin-left: 100px;
-    list-style: "+ ";
-}
-
-.details li:hover {
-    cursor: pointer;
-    color: blue;
+    margin-left: 15px;
+    list-style: none;
 }
 </style>
