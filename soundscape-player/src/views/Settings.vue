@@ -15,7 +15,8 @@ class Settings extends Vue {
     store: any = useStore();
     
     file: any;
-    successfullyAdded: boolean = false;
+    successfullyAddedSoundscape: boolean = false;
+    successfullyAddedFolder: boolean = false;
 
     @Ref('fileInput')
     fileInput!: HTMLInputElement;
@@ -48,7 +49,7 @@ class Settings extends Vue {
             this.store.dispatch('addSoundFile', { file });
         }
 
-        console.log(this.store.getters.soundFiles);
+        this.successfullyAddedFolder = true;
     }
 
     private loadFile(readerResult: ProgressEvent<FileReader>) {
@@ -57,7 +58,7 @@ class Settings extends Vue {
         loadedScript.title = this.file.name;
         this.soundscapeScriptLoaded(loadedScript);
 
-        this.successfullyAdded = true;
+        this.successfullyAddedSoundscape = true;
     }
 
     soundscapeScriptLoaded(script: SoundscapeScript) {
@@ -75,11 +76,15 @@ export default toNative(Settings);
 
         <label for="path">Import soundscape script</label>
         <input id="path" type="file" ref="fileInput" @change="readFile()">
+        <p v-if="successfullyAddedSoundscape">Soundscape script successfully added.</p>
 
+        <label for="path">Import "sound" folder</label>
         <input type="file" id="folder" ref="folderInput" @change="readFolder()" webkitdirectory directory multiple/>
+        <p v-if="successfullyAddedFolder">Sound folder successfully added.</p>
 
-        <p v-if="successfullyAdded">Soundscape script successfully added.</p>
     </div>
 </template>
 
-<style></style>
+<style>
+
+</style>
