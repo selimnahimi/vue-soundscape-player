@@ -50,7 +50,7 @@ class SoundscapePlayer extends Vue {
     }
 
     private playActionOnRepeat(action: SoundscapeAction, actionIndex: number) {
-        if (action.type === 'playsoundscape') {
+        if (!this.shouldRepeat(action)) {
             this.playAction(action);
             return;
         }
@@ -61,6 +61,18 @@ class SoundscapePlayer extends Vue {
             this.playAction(action);
             this.playActionOnRepeat(action, actionIndex);
         }, delay);
+    }
+
+    private shouldRepeat(action: SoundscapeAction): boolean {
+        if (action.type === 'playsoundscape') {
+            return false;
+        }
+
+        if (action.type === 'playlooping') {
+            return false;
+        }
+
+        return true;
     }
 
     private getRandomDelay(action: SoundscapeAction) {
@@ -74,6 +86,10 @@ class SoundscapePlayer extends Vue {
             this.playActionRandom(action);
         }
 
+        if (action.type === 'playlooping') {
+            this.playActionLooping(action);
+        }
+
         if (action.type === 'playsoundscape') {
             this.playActionSoundscape(action);
         }
@@ -85,6 +101,11 @@ class SoundscapePlayer extends Vue {
 
         if (soundscape)
             this.playOtherSoundscape(soundscape);
+    }
+
+    private playActionLooping(action: SoundscapeAction) {
+        console.log("playing loop");
+        SoundPlayer.playSoundLooping(action.rndwave[0]);
     }
 
     private playActionRandom(action: SoundscapeAction) {

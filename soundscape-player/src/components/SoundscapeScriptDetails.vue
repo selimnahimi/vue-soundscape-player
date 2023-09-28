@@ -47,7 +47,7 @@ export default toNative(SoundscapeScriptDetails);
         <h4>{{ soundscapeScript.title }}</h4>
         <ul>
             <li v-for="soundscape in soundscapeScript.soundscapes" :key="soundscape.name">
-                <SoundscapeDetails :soundscape="soundscape" />
+                <SoundscapeDetails @playSoundscape="playSoundscape" :soundscape="soundscape" />
             </li>
         </ul>
     </div>
