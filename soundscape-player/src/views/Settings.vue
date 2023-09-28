@@ -79,8 +79,6 @@ export default toNative(Settings);
         <input type="file" id="folder" ref="folderInput" @change="readFolder()" webkitdirectory directory multiple/>
 
         <p v-if="successfullyAdded">Soundscape script successfully added.</p>
-
-        <button @click="playSound('ui/buttonclick.wav')">Play</button>
     </div>
 </template>
 
