@@ -85,6 +85,7 @@ button {
     border: none;
     font-size: 32px;
     color: rgb(var(--lightest));
+    cursor: pointer;
 }
 
 p:hover {

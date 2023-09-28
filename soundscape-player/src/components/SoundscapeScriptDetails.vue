@@ -55,7 +55,7 @@ export default toNative(SoundscapeScriptDetails);
 
 <style>
 .details {
-    border: 1px solid black;
+    margin-bottom: 50px;
 }
 
 .details li {

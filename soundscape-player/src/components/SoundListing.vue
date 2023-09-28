@@ -11,7 +11,7 @@ import SoundTree from './SoundTree.vue';
 class SoundListing extends Vue {
     store: any = useStore();
 
-    viewMode: 'tree' | 'list' = 'list';
+    viewMode: 'tree' | 'list' = 'tree';
     
     get soundFiles(): File[] {
         return this.store.getters.soundFiles;
@@ -30,8 +30,8 @@ export default toNative(SoundListing);
     <p>
         View mode:
         <select v-model="viewMode">
-            <option value="list">List</option>
             <option value="tree">Tree</option>
+            <option value="list">List</option>
         </select>
     </p>
     <ul v-if="viewMode === 'list'">
