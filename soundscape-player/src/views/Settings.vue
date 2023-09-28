@@ -57,13 +57,7 @@ class Settings extends Vue {
         loadedScript.title = this.file.name;
         this.soundscapeScriptLoaded(loadedScript);
 
-        this.playSound('ui/buttonclick.wav');
-
         this.successfullyAdded = true;
-    }
-
-    async playSound(soundPath: string) {
-        SoundPlayer.playSound(soundPath);
     }
 
     soundscapeScriptLoaded(script: SoundscapeScript) {

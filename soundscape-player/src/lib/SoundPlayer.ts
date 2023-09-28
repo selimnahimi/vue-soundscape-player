@@ -1,29 +1,21 @@
 export default class SoundPlayer {
     static defaultGame = 'hl2';
 
-    static async playSoundFile(file: File, game: string = this.defaultGame) {
+    static playSoundFile(file: File, volume: number = 1.0, game: string = this.defaultGame): HTMLAudioElement {
+        return this.play(file, volume, false, game);
+    }
+
+    static playSoundFileLoop(file: File, volume: number = 1.0, game: string = this.defaultGame): HTMLAudioElement {
+        return this.play(file, volume, true, game);
+    }
+
+    private static play(file: File, volume: number, loop: boolean = false, game: string): HTMLAudioElement {
         const url = URL.createObjectURL(file);
         const audio = new Audio(url);
-        audio.play();
-    }
-
-    static async playSound(soundPath: string, game: string = this.defaultGame) {
-        this.loadSound(soundPath, game)
-        .then(sound => this.play(sound));
-    }
-
-    static async playSoundLooping(soundPath: string, game: string = this.defaultGame) {
-        this.loadSound(soundPath, game)
-        .then(sound => this.play(sound, true));
-    }
-
-    private static async loadSound(soundPath: string, game: string = this.defaultGame) {
-        return await import("../assets/games/" + game + "/sound/" + soundPath /* @vite-ignore */);
-    }
-
-    private static play(sound: any, loop: boolean = false) {
-        const audio = new Audio(sound.default);
+        audio.volume = volume;
         audio.loop = loop;
         audio.play();
+
+        return audio;
     }
 }

@@ -14,7 +14,7 @@ class SoundscapePlayer extends Vue {
 
     timers: { [key: number]: ReturnType<typeof setTimeout> } = {};
 
-    activeSounds: HTMLAudioElement[] = [];
+    activeLoopingSounds: HTMLAudioElement[] = [];
 
     mounted() {
         console.log("playing " + this.soundscape.name);
@@ -38,6 +38,7 @@ class SoundscapePlayer extends Vue {
 
     stop() {
         this.clearTimers();
+        this.stopLoops();
     }
 
     @Emit
@@ -51,6 +52,14 @@ class SoundscapePlayer extends Vue {
         }
 
         this.timers = {};
+    }
+
+    private stopLoops() {
+        this.activeLoopingSounds.forEach(sound => {
+            sound.pause();
+        });
+
+        this.activeLoopingSounds = [];
     }
 
     private playActionOnRepeat(action: SoundscapeAction, actionIndex: number) {
@@ -82,7 +91,21 @@ class SoundscapePlayer extends Vue {
     private getRandomDelay(action: SoundscapeAction) {
         let max = action.time.max;
         let min = action.time.min;
-        return Math.floor(Math.random() * (max - min + 1) + min);
+        return this.randInt(min, max);
+    }
+
+    private getRandomVolume(action: SoundscapeAction) {
+        let max = action.volume.max;
+        let min = action.volume.min;
+        return this.randFloat(min, max);
+    }
+
+    private randInt(min: number, max: number): number {
+        return Math.floor(this.randFloat(min, max));
+    }
+
+    private randFloat(min: number, max: number): number {
+        return Math.random() * (max - min + 1) + min;
     }
 
     private playAction(action: SoundscapeAction) {
@@ -108,17 +131,29 @@ class SoundscapePlayer extends Vue {
     }
 
     private playActionLooping(action: SoundscapeAction) {
-        console.log("playing loop");
-        SoundPlayer.playSoundLooping(action.rndwave[0]);
+        if (action.rndwave.length === 0)
+            return;
+
+        let soundPath = action.rndwave[0];
+        let soundFile = this.getSoundFile(soundPath);
+
+        if (!soundFile)
+            return;
+
+        let randomVolume = this.getRandomVolume(action);
+        let sound = SoundPlayer.playSoundFileLoop(soundFile, randomVolume);
+
+        this.activeLoopingSounds.push(sound);
     }
 
     private playActionRandom(action: SoundscapeAction) {
         let soundPath = this.getRandomSound(action);
         let soundFile = this.getSoundFile(soundPath);
-        console.log('playing ' + soundFile);
+
+        let randomVolume = this.getRandomVolume(action);
 
         if (soundFile)
-            SoundPlayer.playSoundFile(soundFile);
+            SoundPlayer.playSoundFile(soundFile, randomVolume);
     }
 
     private getRandomSound(action: SoundscapeAction) {
@@ -137,14 +172,18 @@ class SoundscapePlayer extends Vue {
     }
 
     private getSoundFile(path: string): File | null {
-        let soundFiles: { [key: string]: File } = this.store.getters.soundFiles;
+        let soundFiles = this.getSoundFilesFromStorage();
         if (!path.startsWith('sound/'))
             path = 'sound/' + path;
-        
+
         if (path in soundFiles)
             return soundFiles[path];
         else
             return null;
+    }
+
+    private getSoundFilesFromStorage(): { [key: string]: File } {
+        return this.store.getters.soundFiles;
     }
 }
 
