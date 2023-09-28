@@ -51,7 +51,7 @@ export default toNative(SoundscapeActionDetails);
     background-color: rgba(var(--darkest), 0.8);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     width: fit-content;
-    font-size: 0.5em;
+    font-size: 0.75em;
 
     margin: 15px;
 

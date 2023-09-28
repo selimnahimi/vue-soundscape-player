@@ -16,7 +16,7 @@ body {
     background-color: rgb(var(--darker));
     color: white;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 2em;
+    font-size: 1.5em;
 }
 
 label {

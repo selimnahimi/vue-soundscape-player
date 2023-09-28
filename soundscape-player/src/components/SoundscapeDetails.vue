@@ -44,8 +44,6 @@ export default toNative(SoundscapeDetails);
 </template>
 
 <style>
-
-
 .details .clickable:hover {
     cursor: pointer;
     color: rgb(var(--lightest));
