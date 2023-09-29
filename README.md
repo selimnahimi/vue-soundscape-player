@@ -2,6 +2,8 @@
 
 A Source engine soundscape player written in Vue.js
 
+https://selimnahimi.github.io/vue-soundscape-player/
+
 ![preview](https://github.com/selimnahimi/vue-soundscape-player/assets/21970287/c824b1db-ad40-4ce7-b294-e2b7122c9959)
 
 
