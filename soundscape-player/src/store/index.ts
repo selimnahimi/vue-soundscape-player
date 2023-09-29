@@ -40,7 +40,6 @@ export const store = createStore<State>({
         },
 
         playSoundscape(state: State, soundscape: Soundscape) {
-            console.log(state.currentlyPlayingSoundscapes);
             state.currentlyPlayingSoundscapes.push(soundscape);
         },
 

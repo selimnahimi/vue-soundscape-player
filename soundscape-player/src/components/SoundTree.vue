@@ -27,8 +27,6 @@ class SoundTree extends Vue {
 
             this.processSplitPath(splitPath, file);
         });
-
-        console.log(this.content);
     }
 
     private processSplitPath(splitPath: string[], file: File) {
