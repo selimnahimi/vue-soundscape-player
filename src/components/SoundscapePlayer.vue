@@ -14,7 +14,7 @@ class SoundscapePlayer extends Vue {
 
     timers: { [key: number]: ReturnType<typeof setTimeout> } = {};
 
-    activeLoopingSounds: Howl[] = [];
+    activeLoopingSounds: { [key: string]: Howl } = {};
 
     mounted() {
         console.log("playing " + this.soundscape.name);
@@ -55,12 +55,12 @@ class SoundscapePlayer extends Vue {
     }
 
     private stopLoops() {
-        this.activeLoopingSounds.forEach(sound => {
-            sound.stop();
-            sound.unload();
-        });
+        for (const sound in this.activeLoopingSounds) {
+            this.activeLoopingSounds[sound].stop();
+            this.activeLoopingSounds[sound].unload();
+        }
 
-        this.activeLoopingSounds = [];
+        this.activeLoopingSounds = {};
     }
 
     private playActionOnRepeat(action: SoundscapeAction, actionIndex: number) {
@@ -141,10 +141,17 @@ class SoundscapePlayer extends Vue {
         if (!soundFile)
             return;
 
+        if (this.soundAlreadyLooping(soundPath))
+            return;
+
         let randomVolume = this.getRandomVolume(action);
 
         SoundPlayer.playSoundFileLoop(soundFile, randomVolume)
-            .then(audio => this.activeLoopingSounds.push(audio));
+            .then(audio => this.activeLoopingSounds[soundPath] = audio);
+    }
+
+    private soundAlreadyLooping(soundPath: string): boolean {
+        return soundPath in this.activeLoopingSounds;
     }
 
     private playActionRandom(action: SoundscapeAction) {
@@ -190,7 +197,7 @@ class SoundscapePlayer extends Vue {
 
     private removeSpecialCharacters(path: string): string {
         // Some sounds have special characters: https://developer.valvesoftware.com/wiki/Soundscripts#Sound_Characters
-        return path.replace(new RegExp('[\@\>\<\^\)\}\$\!\?\&\~\`\+\(\%\*]'), '');
+        return path.replace(new RegExp('[@><^)}$!?&~`+(%*]'), '');
     }
 
     private appendSoundFolder(path: string) {
