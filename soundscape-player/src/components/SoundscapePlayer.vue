@@ -173,8 +173,9 @@ class SoundscapePlayer extends Vue {
 
     private getSoundFile(path: string): File | null {
         let soundFiles = this.getSoundFilesFromStorage();
-        if (!path.startsWith('sound/'))
-            path = 'sound/' + path;
+
+        path = this.appendSoundFolder(path);
+        path = this.removeSpecialCharacters(path);
 
         if (path in soundFiles)
             return soundFiles[path];
@@ -184,6 +185,18 @@ class SoundscapePlayer extends Vue {
 
     private getSoundFilesFromStorage(): { [key: string]: File } {
         return this.store.getters.soundFiles;
+    }
+
+    private removeSpecialCharacters(path: string): string {
+        // Some sounds have special characters: https://developer.valvesoftware.com/wiki/Soundscripts#Sound_Characters
+        return path.replace(new RegExp('[\@\>\<\^\)\}\$\!\?\&\~\`\+\(\%]'), '');
+    }
+
+    private appendSoundFolder(path: string) {
+        if (!path.startsWith('sound/'))
+            return 'sound/' + path;
+
+        return path;
     }
 }
 
