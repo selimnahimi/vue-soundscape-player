@@ -8,9 +8,10 @@ import { useStore } from '@/store';
 class Settings extends Vue {
     store: any = useStore();
     
-    file: any;
+    file: File | null = null;
     successfullyAddedSoundscape: boolean = false;
     successfullyAddedFolder: boolean = false;
+    errorMessage: string = '';
 
     @Ref('fileInput')
     fileInput!: HTMLInputElement;
@@ -31,9 +32,20 @@ class Settings extends Vue {
     }
 
     readFile() {
-        if (this.fileInput.files === null) return;
+        this.errorMessage = '';
+
+        if (!this.fileInput.files) {
+            this.errorMessage = 'You must select a soundscape file!';
+            return;   
+        }
 
         this.file = this.fileInput.files[0];
+
+        if (!this.file.name.includes('soundscape') || !this.file.name.endsWith('.txt')) {
+            this.errorMessage = 'You must select a soundscape file!';
+            return;
+        }
+
         const reader = new FileReader();
 
         reader.onload = this.loadFile;
@@ -42,12 +54,20 @@ class Settings extends Vue {
     }
 
     readFolder() {
+        this.errorMessage = '';
+
         if (!this.folderInput.files) {
+            this.errorMessage = 'You must select a sound folder!';
             return;
         }
 
         for (let i = 0; i < this.folderInput.files.length; i++) {
             let file = this.folderInput.files[i];
+            
+            if (!file.webkitRelativePath.startsWith('sound/')) {
+                this.errorMessage = 'You must select a sound folder!';
+                return;
+            }
             this.store.dispatch('addSoundFile', { file });
         }
 
@@ -55,6 +75,11 @@ class Settings extends Vue {
     }
 
     private loadFile(readerResult: ProgressEvent<FileReader>) {
+        if (!this.file) {
+            this.errorMessage = 'Failed to load soundscript file';
+            return;
+        }
+        
         let rawText = readerResult.target!.result!.toString();
         let loadedScript = SoundscapeScriptParser.parse(rawText);
         loadedScript.title = this.file.name;
@@ -90,6 +115,8 @@ export default toNative(Settings);
         <label for="folder">Import "sound" folder</label>
         <input type="file" id="folder" ref="folderInput" @change="readFolder()" webkitdirectory directory multiple/>
         <p v-if="successfullyAddedFolder">Sound folder successfully added.</p>
+
+        <p v-if="errorMessage" class="error">Import failed: {{ errorMessage }}</p>
 
         <h2 style="margin-top: 30px">Help for importing soundscape scripts</h2>
         <p>Every source game has a <span>script</span> folder where all the scripts are stored.</p>
@@ -131,5 +158,9 @@ hr {
 span {
     color: rgb(var(--lighter));
     font-style: italic;
+}
+
+.error {
+    color: red;
 }
 </style>
