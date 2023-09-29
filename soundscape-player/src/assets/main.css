@@ -48,10 +48,11 @@ select {
     cursor: pointer;
     padding: 5px 15px;
     background-color: rgb(var(--lighter));
-    border: solid 1px rgb(var(--lightest));
+    border: solid 1px white;
+    color: white;
 }
 
-select:focus {
+select:focus, select:hover {
     background-color: rgb(var(--lightest));
     border: solid 1px rgb(var(--lighter));
 }
