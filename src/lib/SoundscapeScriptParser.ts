@@ -186,19 +186,31 @@ export default class SoundscapeScriptParser {
         const split = this.stringBuffer.split(",");
 
         if (split.length > 1) {
-            const start = split[0].trim();
-            const end = split[1].trim();
+            let start = split[0].trim();
+            let end = split[1].trim();
+
+            start = this.addZeroToFloatString(start);
+            end = this.addZeroToFloatString(end);
+
             return {
-                min: parseInt(start),
-                max: parseInt(end)
+                min: parseFloat(start),
+                max: parseFloat(end)
             }
         } else {
             const singleNumber = split[0];
             return {
-                min: parseInt(singleNumber),
-                max: parseInt(singleNumber)
+                min: parseFloat(singleNumber),
+                max: parseFloat(singleNumber)
             }
         }
+    }
+
+    private addZeroToFloatString(floatString: string) {
+        if (floatString.startsWith(".")) {
+            return "0" + floatString;
+        }
+
+        return floatString;
     }
 
     private increaseDepth() {
