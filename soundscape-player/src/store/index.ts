@@ -1,7 +1,7 @@
 import type Soundscape from '@/model/Soundscape'
 import type SoundscapeScript from '@/model/SoundscapeScript'
 import { type InjectionKey } from 'vue'
-import { createStore, useStore as baseUseStore, Store } from 'vuex'
+import { createStore, useStore as baseUseStore, Store, type ActionContext } from 'vuex'
 
 export interface State {
     soundFiles: { [key: string]: File},
@@ -56,19 +56,19 @@ export const store = createStore<State>({
         }
     },
     actions: {
-        addSoundscapeScript(context: Store<State>, payload: any) {
-            context.commit('addSoundscapeScript', payload.script)
+        addSoundscapeScript(context: ActionContext<State, State>, payload: any) {
+            context.commit('addSoundscapeScript', payload.script);
         },
 
-        playSoundscape(context: Store<State>, payload: any) {
+        playSoundscape(context: ActionContext<State, State>, payload: any) {
             context.commit('playSoundscape', payload.soundscape);
         },
 
-        clearPlayingSoundscapes(context: Store<State>) {
+        clearPlayingSoundscapes(context:ActionContext<State, State>) {
             context.commit('clearPlayingSoundscapes');
         },
 
-        addSoundFile(context: Store<State>, payload: any) {
+        addSoundFile(context: ActionContext<State, State>, payload: any) {
             context.commit('addSoundFile', payload.file);
         }
     }
