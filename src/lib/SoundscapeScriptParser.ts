@@ -223,7 +223,9 @@ export default class SoundscapeScriptParser {
 
     private assertDepthIsPositive() {
         if (this.depth < 0) {
-            console.error("ERROR: Depth has gone below 0!");
+            console.warn("WARNING: Depth has gone below 0!");
+
+            this.depth = 0;
         }
     }
 }
