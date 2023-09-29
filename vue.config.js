@@ -1,3 +1,7 @@
 module.exports = {
-    publicPath: process.env.NODE_ENV === "production" ? "/vue-soundscape-player/" : "/",
+    publicPath: "/vue-soundscape-player/";
 };
+
+export default defineConfig({
+    base: '/vue-soundscape-player/'
+});
