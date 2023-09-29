@@ -28,6 +28,14 @@ class Settings extends Vue {
         return this.store.getters.soundscapeScripts;
     }
 
+    get soundFileAmount() {
+        return Object.keys(this.store.getters.soundFiles).length;
+    }
+
+    get soundscapeScriptAmount() {
+        return this.soundscapeScripts.length;
+    }
+
     readFile() {
         if (this.fileInput.files === null) return;
 
@@ -74,11 +82,18 @@ export default toNative(Settings);
     <div class="content">
         <h1 class="title">Settings</h1>
 
+        <h2>Statistics</h2>
+        <p>Imported soundscapes: {{ soundscapeScriptAmount }}</p>
+        <p>Imported sounds: {{ soundFileAmount }}</p>
+
+        <hr>
+
+        <h2>Import new</h2>
         <label for="path">Import soundscape script</label>
         <input id="path" type="file" ref="fileInput" @change="readFile()">
         <p v-if="successfullyAddedSoundscape">Soundscape script successfully added.</p>
 
-        <label for="path">Import "sound" folder</label>
+        <label for="folder">Import "sound" folder</label>
         <input type="file" id="folder" ref="folderInput" @change="readFolder()" webkitdirectory directory multiple/>
         <p v-if="successfullyAddedFolder">Sound folder successfully added.</p>
 
@@ -86,5 +101,26 @@ export default toNative(Settings);
 </template>
 
 <style>
+label {
+    cursor: pointer;
+    border: 1px solid;
+    background-color: rgb(var(--lighter));
+    width: fit-content;
 
+    padding: 15px;
+    margin: 15px;
+}
+
+label:hover {
+    background-color: rgb(var(--lightest));
+}
+
+input {
+    display: none;
+}
+
+hr {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
 </style>

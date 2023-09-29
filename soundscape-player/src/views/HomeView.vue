@@ -28,6 +28,7 @@ export default toNative(HomeView);
 <template>
     <div class="content">
         <h1 class="title">List of soundscapes</h1>
+        <p v-if="soundscapeScripts.length === 0">Nothing imported yet.</p>
 
         <SoundscapeScriptDetails v-for="script in soundscapeScripts" :soundscapeScript="script" @playSoundscape="playSoundscape" />
     </div>
