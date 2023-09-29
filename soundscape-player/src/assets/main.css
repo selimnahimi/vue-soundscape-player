@@ -54,5 +54,5 @@ select {
 
 select:focus, select:hover {
     background-color: rgb(var(--lightest));
-    border: solid 1px rgb(var(--lighter));
+    border: solid 1px white;
 }
