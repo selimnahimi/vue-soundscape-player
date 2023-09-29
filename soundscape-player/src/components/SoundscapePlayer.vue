@@ -189,7 +189,7 @@ class SoundscapePlayer extends Vue {
 
     private removeSpecialCharacters(path: string): string {
         // Some sounds have special characters: https://developer.valvesoftware.com/wiki/Soundscripts#Sound_Characters
-        return path.replace(new RegExp('[\@\>\<\^\)\}\$\!\?\&\~\`\+\(\%]'), '');
+        return path.replace(new RegExp('[\@\>\<\^\)\}\$\!\?\&\~\`\+\(\%\*]'), '');
     }
 
     private appendSoundFolder(path: string) {
