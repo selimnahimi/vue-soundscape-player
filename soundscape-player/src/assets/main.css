@@ -38,3 +38,8 @@ input[type=text]:focus {
 input {
     margin-bottom: 30px;
 }
+
+a {
+    text-decoration: none;
+    color: rgb(var(--lightest));
+}

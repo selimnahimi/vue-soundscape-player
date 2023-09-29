@@ -31,8 +31,11 @@ export default toNative(NavBar);
                 <RouterLink to="/sounds">
                     <li>Sounds</li>
                 </RouterLink>
-                <RouterLink to="/settings">
+                <RouterLink to="/import">
                     <li>Import</li>
+                </RouterLink>
+                <RouterLink to="/about">
+                    <li>About</li>
                 </RouterLink>
             </ul>
             <p class="currently-playing" v-if="playingSoundscape">Currently playing: {{ playingSoundscape.name }}</p>

@@ -1,7 +1,6 @@
 <script lang="ts">
-import { Component, Emit, Prop, Ref, Vue, toNative } from 'vue-facing-decorator';
+import { Component, Ref, Vue, toNative } from 'vue-facing-decorator';
 import SoundscapeScriptParser from '@/lib/SoundscapeScriptParser';
-import SoundPlayer from '@/lib/SoundPlayer';
 import SoundscapeScriptDetails from '@/components/SoundscapeScriptDetails.vue';
 import type SoundscapeScript from '@/model/SoundscapeScript';
 import { useStore } from '@/store';
@@ -80,7 +79,7 @@ export default toNative(Settings);
 
 <template>
     <div class="content">
-        <h1 class="title">Settings</h1>
+        <h1 class="title">Import</h1>
 
         <h2>Statistics</h2>
         <p>Imported soundscapes: {{ soundscapeScriptAmount }}</p>
