@@ -3,7 +3,6 @@ import { RouterView } from 'vue-router';
 import { Component, toNative, Vue } from 'vue-facing-decorator';
 import NavBar from '@/components/NavBar.vue';
 import { useStore } from './store';
-import type Soundscape from './model/Soundscape';
 import SoundscapeDirector from './components/SoundscapeDirector.vue';
 
 @Component({

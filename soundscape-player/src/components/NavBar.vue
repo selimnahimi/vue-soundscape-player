@@ -1,7 +1,7 @@
 <script lang="ts">
 import { useStore } from '@/store';
 import { Component, Vue, toNative } from 'vue-facing-decorator';
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterLink } from 'vue-router';
 
 @Component
 class NavBar extends Vue {

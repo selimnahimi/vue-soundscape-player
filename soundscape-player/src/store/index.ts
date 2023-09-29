@@ -1,4 +1,3 @@
-// store.ts
 import type Soundscape from '@/model/Soundscape'
 import type SoundscapeScript from '@/model/SoundscapeScript'
 import { type InjectionKey } from 'vue'

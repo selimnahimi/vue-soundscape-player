@@ -1,8 +1,6 @@
 <script lang="ts">
 import SoundListing from '@/components/SoundListing.vue';
-import SoundscapeScriptDetails from '@/components/SoundscapeScriptDetails.vue';
 import SoundPlayer from '@/lib/SoundPlayer';
-import type Soundscape from '@/model/Soundscape';
 import { useStore } from '@/store';
 import { Component, Vue, toNative } from 'vue-facing-decorator';
 

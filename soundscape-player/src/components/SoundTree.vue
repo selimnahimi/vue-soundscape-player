@@ -2,7 +2,6 @@
 import { useStore } from '@/store';
 import { Component, Vue, toNative } from 'vue-facing-decorator';
 import SoundTreeItem from './SoundTreeItem.vue';
-import SoundPlayer from '@/lib/SoundPlayer';
 
 @Component({
     components: {

@@ -33,5 +33,3 @@ export default toNative(HomeView);
         <SoundscapeScriptDetails v-for="script in soundscapeScripts" :soundscapeScript="script" @playSoundscape="playSoundscape" />
     </div>
 </template>
-
-<style></style>

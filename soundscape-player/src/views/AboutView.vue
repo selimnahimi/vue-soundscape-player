@@ -1,17 +1,3 @@
-<script lang="ts">
-import SoundscapeScriptDetails from '@/components/SoundscapeScriptDetails.vue';
-import type Soundscape from '@/model/Soundscape';
-import { useStore } from '@/store';
-import { Component, Vue, toNative } from 'vue-facing-decorator';
-
-@Component
-class AboutView extends Vue {
-
-}
-
-export default toNative(AboutView);
-</script>
-
 <template>
     <div class="content">
         <h1 class="title">About</h1>

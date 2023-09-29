@@ -1,15 +1,10 @@
 <script lang="ts">
 import { Component, Ref, Vue, toNative } from 'vue-facing-decorator';
 import SoundscapeScriptParser from '@/lib/SoundscapeScriptParser';
-import SoundscapeScriptDetails from '@/components/SoundscapeScriptDetails.vue';
 import type SoundscapeScript from '@/model/SoundscapeScript';
 import { useStore } from '@/store';
 
-@Component({
-    components: {
-        SoundscapeScriptDetails
-    }
-})
+@Component
 class Settings extends Vue {
     store: any = useStore();
     

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { useStore, type State } from '@/store';
+import { useStore } from '@/store';
 import { Component, Emit, Vue, toNative } from 'vue-facing-decorator';
 import SoundTree from './SoundTree.vue';
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 import SoundPlayer from '@/lib/SoundPlayer';
-import { Component, Emit, Prop, Vue, toNative } from 'vue-facing-decorator';
+import { Component, Prop, Vue, toNative } from 'vue-facing-decorator';
 
 @Component
 class SoundTreeItem extends Vue {
