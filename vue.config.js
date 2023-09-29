@@ -1,5 +1,5 @@
 module.exports = {
-    publicPath: "/vue-soundscape-player/";
+    publicPath: "/vue-soundscape-player/"
 };
 
 export default defineConfig({
