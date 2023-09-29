@@ -96,10 +96,20 @@ export default toNative(Settings);
         <input type="file" id="folder" ref="folderInput" @change="readFolder()" webkitdirectory directory multiple/>
         <p v-if="successfullyAddedFolder">Sound folder successfully added.</p>
 
+        <h2 style="margin-top: 30px">Help for importing soundscape scripts</h2>
+        <p>Every source game has a <span>script</span> folder where all the scripts are stored.</p>
+        <p>Among them there are files which names start with the word <span>soundscape</span>.</p>
+        <p>You can import these into this application.</p>
+
+        <h2 style="margin-top: 30px">Help for importing sounds</h2>
+        <p>Every source game has a <span>sound</span> folder where all the audio files are stored.</p>
+        <p>This is usually stored in a <span>vpk</span> package. You must extract it using <span>GCFScape</span>, then import it into this application.</p>
+        <p>A guide to do this can be found here: <a href="https://developer.valvesoftware.com/wiki/GCFScape" target="_blank">https://developer.valvesoftware.com/wiki/GCFScape</a></p>
+        <p style="margin-top: 30px">When importing, make sure to select this <span>sound</span> folder only (not a subfolder, or the game's root folder.)</p>
     </div>
 </template>
 
-<style>
+<style scoped>
 label {
     cursor: pointer;
     border: 1px solid;
@@ -121,5 +131,10 @@ input {
 hr {
     margin-top: 30px;
     margin-bottom: 30px;
+}
+
+span {
+    color: rgb(var(--lighter));
+    font-style: italic;
 }
 </style>
