@@ -14,7 +14,7 @@ class SoundscapePlayer extends Vue {
 
     timers: { [key: number]: ReturnType<typeof setTimeout> } = {};
 
-    activeLoopingSounds: HTMLAudioElement[] = [];
+    activeLoopingSounds: Howl[] = [];
 
     mounted() {
         console.log("playing " + this.soundscape.name);
@@ -56,7 +56,8 @@ class SoundscapePlayer extends Vue {
 
     private stopLoops() {
         this.activeLoopingSounds.forEach(sound => {
-            sound.pause();
+            sound.stop();
+            sound.unload();
         });
 
         this.activeLoopingSounds = [];
@@ -141,9 +142,9 @@ class SoundscapePlayer extends Vue {
             return;
 
         let randomVolume = this.getRandomVolume(action);
-        let sound = SoundPlayer.playSoundFileLoop(soundFile, randomVolume);
 
-        this.activeLoopingSounds.push(sound);
+        SoundPlayer.playSoundFileLoop(soundFile, randomVolume)
+            .then(audio => this.activeLoopingSounds.push(audio));
     }
 
     private playActionRandom(action: SoundscapeAction) {

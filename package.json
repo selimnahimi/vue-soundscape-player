@@ -13,6 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "howler": "^2.2.4",
     "vue": "^3.3.4",
     "vue-facing-decorator": "^3.0.2",
     "vue-router": "^4.2.4",
@@ -22,6 +23,7 @@
     "@rushstack/eslint-patch": "^1.3.3",
     "@tsconfig/node18": "^18.2.2",
     "@types/node": "^18.17.19",
+    "@types/howler": "^2.2.9",
     "@vitejs/plugin-vue": "^4.3.4",
     "@vitejs/plugin-vue-jsx": "^3.0.2",
     "@vue/eslint-config-prettier": "^8.0.0",
