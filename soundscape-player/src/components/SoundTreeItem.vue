@@ -103,7 +103,12 @@ p:hover {
 }
 
 .file:hover {
-    color: rgb(var(--lightest))
+    color: rgb(var(--lightest));
+}
+
+.file:hover::before {
+    content: '▶ ';
+    color: green;
 }
 
 ul li {

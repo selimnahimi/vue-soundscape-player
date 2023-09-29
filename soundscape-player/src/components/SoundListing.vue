@@ -43,12 +43,17 @@ export default toNative(SoundListing);
 <style scoped>
 li {
     user-select: none;
-    margin-left: 50px;
-    list-style: square;
+    margin-left: 40px;
+    list-style: none;
 }
 
 li:hover {
     cursor: pointer;
     color: rgb(var(--lightest));
+}
+
+li:hover::before {
+    content: '▶ ';
+    color: green;
 }
 </style>
