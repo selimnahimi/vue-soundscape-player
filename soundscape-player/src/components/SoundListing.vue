@@ -43,6 +43,8 @@ export default toNative(SoundListing);
 <style scoped>
 li {
     user-select: none;
+    margin-left: 50px;
+    list-style: square;
 }
 
 li:hover {

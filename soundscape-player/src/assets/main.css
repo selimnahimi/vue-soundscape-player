@@ -43,3 +43,15 @@ a {
     text-decoration: none;
     color: rgb(var(--lightest));
 }
+
+select {
+    cursor: pointer;
+    padding: 5px 15px;
+    background-color: rgb(var(--lighter));
+    border: solid 1px rgb(var(--lightest));
+}
+
+select:focus {
+    background-color: rgb(var(--lightest));
+    border: solid 1px rgb(var(--lighter));
+}
