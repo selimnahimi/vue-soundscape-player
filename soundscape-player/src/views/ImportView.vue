@@ -62,16 +62,33 @@ class Settings extends Vue {
         }
 
         for (let i = 0; i < this.folderInput.files.length; i++) {
-            let file = this.folderInput.files[i];
+            const file = this.folderInput.files[i];
             
             if (!file.webkitRelativePath.startsWith('sound/')) {
                 this.errorMessage = 'You must select a sound folder!';
                 return;
             }
+
+            if (!this.isSoundFile(file)) {
+                continue;
+            }
+
             this.store.dispatch('addSoundFile', { file });
         }
 
         this.successfullyAddedFolder = true;
+    }
+
+    private isSoundFile(file: File): boolean {
+        let acceptedExtensions = ['.wav', '.mp3', '.ogg'];
+        
+        for (const ext of acceptedExtensions) {
+            if (file.name.endsWith(ext)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private loadFile(readerResult: ProgressEvent<FileReader>) {
@@ -79,7 +96,7 @@ class Settings extends Vue {
             this.errorMessage = 'Failed to load soundscript file';
             return;
         }
-        
+
         let rawText = readerResult.target!.result!.toString();
         let loadedScript = SoundscapeScriptParser.parse(rawText);
         loadedScript.title = this.file.name;
